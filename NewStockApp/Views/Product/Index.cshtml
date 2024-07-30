@@ -1,0 +1,60 @@
+﻿@using StockApp.Core.Application.ViewModels.Products;
+@model List<ProductViewModel>
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-3 offset-9">
+            <a asp-controller="Product" asp-action="Create" class="btn btn-outline-success">Crear un nuevo producto</a>
+        </div>
+    </div>
+    <div class="row">
+        @if (Model==null || Model.Count==0)
+        {
+            <h2>No hay productos</h2>
+        }
+        else
+        {
+            
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary">
+                    <h3 class="text-white">Mant. de productos</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-3 offset-9">
+                            <a class="btn btn-outline-primary" asp-controller="Product" asp-action="Create">Crear nuevo producto</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @foreach (ProductViewModel item in Model)
+                        {
+                            <div class="col-4 mb-3">
+                                <div class="card shadow-sm">
+                                    <img src="@item.ImagePath" class="img-product-size bd-placeholder-img card-img-top" />
+
+                                    <div class="card-body">
+                                        <h3 class="card-title">@item.Name - Category: @item.CategoryName</h3>
+                                        <p class="card-text">@item.Description</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Editar</a>
+                                                <a asp-controller="Product" asp-action="Delete"  asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Borrar</a>
+                                            </div>
+                                            <small class="fw-bold">$@item.Price</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+
+    </div>
+</div>

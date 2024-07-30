@@ -1,0 +1,80 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using StockApp.Core.Application.Dtos.Account
+@using StockApp.Core.Application.Helpers;
+@using StockApp.Core.Application.ViewModels.Users;
+@inject IHttpContextAccessor httpContext;
+
+@{
+    var user = httpContext.HttpContext.Session.Get<AuthenticationResponse>("user");
+    bool isAdmin = user != null ? user.Roles.Any(role => role == "ADMIN") : false;
+    bool isBasic = user != null ? user.Roles.Any(role => role == "BASIC") : false;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DatabaseFirstExample</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-danger border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand text-white fw-bold" asp-area="" asp-controller="@(user!=null ? "Home" : "User")" asp-action="Index">StockApp</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">  
+                        
+                        @if(user!=null){    
+                            @if(isAdmin)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white fw-bold" asp-area="" asp-controller="Category" asp-action="Index">Mant.Categorias</a>
+                                </li>
+                            }
+                            @if(isBasic)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white fw-bold" asp-area="" asp-controller="Product" asp-action="Index">Mant.Productos</a>
+                                </li>
+                            }
+
+                            <li class="nav-item">
+                                <a class="nav-link text-white fw-bold" asp-area="" asp-controller="User" asp-action="LogOut">Cerrar sesion (@user.UserName)</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white fw-bold" asp-area="" asp-controller="User" asp-action="Register">Registrate!</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; @DateTime.Now.Year - StockApp
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
