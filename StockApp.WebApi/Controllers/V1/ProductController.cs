@@ -1,6 +1,11 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StockApp.Core.Application.Features.Products.Commands.CreateProduct;
+using StockApp.Core.Application.Features.Products.Commands.DeleteProduct;
+using StockApp.Core.Application.Features.Products.Commands.UpdateProduct;
+using StockApp.Core.Application.Features.Products.Queries.GetAllProducts;
+using StockApp.Core.Application.Features.Products.Queries.GetProductByID;
 using StockApp.Core.Application.Interfaces.Services;
 using StockApp.Core.Application.ViewModels.Products;
 
@@ -10,27 +15,28 @@ namespace StockApp.WebApi.Controllers.V1
     [Authorize(Roles ="ADMIN")]
     public class ProductController : BaseApiController
     {
-        protected readonly IProductService _productService;
-        public ProductController(IProductService _productService)
-        {
-            this._productService = _productService;
-        }
+        //protected readonly IProductService _productService;
+        //public ProductController(IProductService _productService)
+        //{
+        //    this._productService = _productService;
+        //}
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductViewModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> GetAllProductsAsync([FromQuery] FilterProductsViewModel filters)
+        public async Task<IActionResult> GetAllProductsAsync([FromQuery] GetAllProductsParameter filters)
         {
             try
             {
-                IEnumerable<ProductViewModel> products = await _productService.GetAllViewModelWithFilter(filters);
-                if (products == null || products.Count() == 0)
-                {
-                    return NotFound();
-                }
-                return Ok(products);
+                return Ok(await Mediator.Send(new GetAllProductsQuery() { CategoryId = filters.CategoryId }));
+                //IEnumerable<ProductViewModel> products = await _productService.GetAllViewModelWithFilter(filters);
+                //if (products == null || products.Count() == 0)
+                //{
+                //    return NotFound();
+                //}
+                //return Ok(products);
             }
             catch (Exception ex)
             {
@@ -47,12 +53,13 @@ namespace StockApp.WebApi.Controllers.V1
         {
             try
             {
-                SaveProductViewModel product = await _productService.GetByIdSaveViewModel(id);
-                if (product == null )
-                {
-                    return NotFound();
-                }
-                return Ok(product);
+                return Ok(await Mediator.Send(new GetProductByIdQuery() { Id = id }));
+                //SaveProductViewModel product = await _productService.GetByIdSaveViewModel(id);
+                //if (product == null )
+                //{
+                //    return NotFound();
+                //}
+                //return Ok(product);
             }
             catch (Exception ex)
             {
@@ -65,7 +72,7 @@ namespace StockApp.WebApi.Controllers.V1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> Post(SaveProductViewModel vm)
+        public async Task<IActionResult> Post([FromBody] CreateProductCommand command)
         {
             try
             {
@@ -73,8 +80,10 @@ namespace StockApp.WebApi.Controllers.V1
                 {
                     return BadRequest();
                 }
-                await _productService.Add(vm);
-                return NoContent();
+
+                return Ok(Mediator.Send(command));
+                //await _productService.Add(vm);
+                //return NoContent();
             }
             catch (Exception ex)
             {
@@ -87,7 +96,7 @@ namespace StockApp.WebApi.Controllers.V1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> Put(int id,SaveProductViewModel vm)
+        public async Task<IActionResult> Put(int id, UpdateProductCommand command)
         {
             try
             {
@@ -95,8 +104,16 @@ namespace StockApp.WebApi.Controllers.V1
                 {
                     return BadRequest();
                 }
-                await _productService.Update(vm, id);
-                return Ok(vm);
+                //ToString validate the prodtc to update
+                if (id != command.Id)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(await Mediator.Send(command));
+
+                //await _productService.Update(vm, id);
+                //return Ok(vm);
             }
             catch (Exception ex)
             {
@@ -111,8 +128,11 @@ namespace StockApp.WebApi.Controllers.V1
         {
             try
             {
-                await _productService.Delete(id);
+                await Mediator.Send(new DeleteProductByIdCommand() { Id = id });
                 return NoContent();
+
+                //await _productService.Delete(id);
+                //return NoContent();
             }
             catch (Exception ex)
             {

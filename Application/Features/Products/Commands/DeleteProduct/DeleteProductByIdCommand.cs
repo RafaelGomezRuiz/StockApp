@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using StockApp.Core.Application.Interfaces.Repositories;
 
 namespace StockApp.Core.Application.Features.Products.Commands.DeleteProduct
@@ -17,9 +16,16 @@ namespace StockApp.Core.Application.Features.Products.Commands.DeleteProduct
         {
             this.productRepository = productRepository;
         }
-        public Task<int> Handle(DeleteProductByIdCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(DeleteProductByIdCommand command, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var producto = await productRepository.GetByIdAsync(command.Id);
+
+            if (producto == null) throw new Exception("Product Doesnt exits");
+
+
+            await productRepository.DeleteAsync(producto);
+
+            return producto.Id;
         }
     }
 
