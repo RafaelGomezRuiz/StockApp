@@ -25,7 +25,7 @@ namespace StockApp.WebApi.Controllers.V1
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> GetAllProductsAsync([FromQuery] GetAllProductsParameter filters)
+        public async Task<IActionResult> Get([FromQuery] GetAllProductsParameter filters)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace StockApp.WebApi.Controllers.V1
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> GetAllProductsAsync(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {

@@ -1,5 +1,9 @@
 ﻿using AutoMapper;
 using StockApp.Core.Application.Dtos.Account;
+using StockApp.Core.Application.Features.Categories.Commands.CreateCategory;
+using StockApp.Core.Application.Features.Categories.Commands.UpdateCategory;
+using StockApp.Core.Application.Features.Products.Commands.CreateProduct;
+using StockApp.Core.Application.Features.Products.Commands.UpdateProduct;
 using StockApp.Core.Application.ViewModels.Categories;
 using StockApp.Core.Application.ViewModels.Products;
 using StockApp.Core.Application.ViewModels.Users;
@@ -64,6 +68,63 @@ namespace StockApp.Core.Application.Mappings
                 .ForMember(destino => destino.HasError, otp => otp.Ignore())
                 .ForMember(destino => destino.ErrorDescription, otp => otp.Ignore())
                 .ReverseMap();
+
+            #region CQRS
+
+                #region Product
+            CreateMap<CreateProductCommand, Product>()
+                .ForMember(destino => destino.Category, otp => otp.Ignore())
+                .ForMember(destino => destino.Created, otp => otp.Ignore())
+                .ForMember(destino => destino.LastModified, otp => otp.Ignore())
+                .ForMember(destino => destino.LastModifiedBy, otp => otp.Ignore())
+                .ForMember(destino => destino.CreatedBy, otp => otp.Ignore())
+                .ReverseMap();
+
+            CreateMap<UpdateProductCommand, Product>()
+                .ForMember(destino => destino.Category, otp => otp.Ignore())
+                .ForMember(destino => destino.Created, otp => otp.Ignore())
+                .ForMember(destino => destino.LastModified, otp => otp.Ignore())
+                .ForMember(destino => destino.LastModifiedBy, otp => otp.Ignore())
+                .ForMember(destino => destino.CreatedBy, otp => otp.Ignore())
+                .ReverseMap();
+
+            CreateMap<ProductUpdateResponse, Product>()
+                .ForMember(destino => destino.Category, otp => otp.Ignore())
+                .ForMember(destino => destino.Created, otp => otp.Ignore())
+                .ForMember(destino => destino.LastModified, otp => otp.Ignore())
+                .ForMember(destino => destino.LastModifiedBy, otp => otp.Ignore())
+                .ForMember(destino => destino.CreatedBy, otp => otp.Ignore())
+                .ReverseMap();
+            #endregion
+                
+                #region Category
+            CreateMap<CreateCategoryCommand, Category>()
+                .ForMember(destino => destino.Products, otp => otp.Ignore())
+                .ForMember(destino => destino.Created, otp => otp.Ignore())
+                .ForMember(destino => destino.LastModified, otp => otp.Ignore())
+                .ForMember(destino => destino.LastModifiedBy, otp => otp.Ignore())
+                .ForMember(destino => destino.CreatedBy, otp => otp.Ignore())
+                .ReverseMap();
+
+            CreateMap<UpdateCategoryCommand, Category>()
+                .ForMember(destino => destino.Products, otp => otp.Ignore())
+                .ForMember(destino => destino.Created, otp => otp.Ignore())
+                .ForMember(destino => destino.LastModified, otp => otp.Ignore())
+                .ForMember(destino => destino.LastModifiedBy, otp => otp.Ignore())
+                .ForMember(destino => destino.CreatedBy, otp => otp.Ignore())
+                .ReverseMap();
+
+            CreateMap<UpdateCategoryResponse, Category>()
+                .ForMember(destino => destino.Products, otp => otp.Ignore())
+                .ForMember(destino => destino.Created, otp => otp.Ignore())
+                .ForMember(destino => destino.LastModified, otp => otp.Ignore())
+                .ForMember(destino => destino.LastModifiedBy, otp => otp.Ignore())
+                .ForMember(destino => destino.CreatedBy, otp => otp.Ignore())
+                .ReverseMap();
+            #endregion
+
+
+            #endregion
         }
     }
 }
