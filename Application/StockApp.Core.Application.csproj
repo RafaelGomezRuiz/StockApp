@@ -21,11 +21,4 @@
     <ProjectReference Include="..\StockApp.Core.Domain\StockApp.Core.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Products\Commands\CreateProduct\" />
-    <Folder Include="Features\Products\Commands\DeleteProduct\" />
-    <Folder Include="Features\Products\Commands\UpdateProduct\" />
-    <Folder Include="Features\Products\Queries\GetProductByID\" />
-  </ItemGroup>
-
 </Project>
