@@ -6,13 +6,12 @@ using StockApp.Core.Application.Features.Products.Commands.DeleteProduct;
 using StockApp.Core.Application.Features.Products.Commands.UpdateProduct;
 using StockApp.Core.Application.Features.Products.Queries.GetAllProducts;
 using StockApp.Core.Application.Features.Products.Queries.GetProductByID;
-using StockApp.Core.Application.Interfaces.Services;
 using StockApp.Core.Application.ViewModels.Products;
 
 namespace StockApp.WebApi.Controllers.V1
 {
     [ApiVersion("1.0")]
-    [Authorize(Roles ="ADMIN")]
+    [Authorize(Roles = "ADMIN")]
     public class ProductController : BaseApiController
     {
         //protected readonly IProductService _productService;

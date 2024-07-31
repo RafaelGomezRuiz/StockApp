@@ -29,6 +29,7 @@ namespace StockApp.Core.Application.Features.Products.Queries.GetAllProducts
             var productsList = await GetAllViewModelWithFilter(request);
             return (productsList == null || productsList.Count == 0) ? throw new Exception("There anrent products") : productsList;
         }
+
         private async Task<List<ProductViewModel>> GetAllViewModelWithFilter(GetAllProductsQuery filters)
         {
             var productlist = await productRepository.GetAllWithIncludeAsync(new List<string> { "Category" });

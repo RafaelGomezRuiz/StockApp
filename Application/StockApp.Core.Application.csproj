@@ -21,4 +21,10 @@
     <ProjectReference Include="..\StockApp.Core.Domain\StockApp.Core.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Categories\Commands\DeleteCategory\" />
+    <Folder Include="Features\Categories\Commands\UpdateCategory\" />
+    <Folder Include="Features\Categories\Commands\CreateCategory\" />
+  </ItemGroup>
+
 </Project>
