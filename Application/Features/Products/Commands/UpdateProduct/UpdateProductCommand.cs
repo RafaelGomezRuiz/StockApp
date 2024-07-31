@@ -30,13 +30,10 @@ namespace StockApp.Core.Application.Features.Products.Commands.UpdateProduct
         public async Task<ProductUpdateResponse> Handle (UpdateProductCommand command, CancellationToken cancellationToken) 
         {
             var product = await productRepository.GetByIdAsync(command.Id);
-
             if (product == null) throw new Exception("Product Doesnt exits");
 
             product = mapper.Map<Product>(command);
-
             await productRepository.UpdateAsync(product, product.Id);
-
             var productResponse =  mapper.Map<ProductUpdateResponse>(product);
             
             return productResponse;
