@@ -2,11 +2,22 @@ using StockApp.Infraestructure.Persistence;
 using StockApp.Infraestructure.Shared;
 using StockApp.Infraestructure.Identity;
 using StockApp.WebApi.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add(new ProducesAttribute("application/json"));
+}).ConfigureApiBehaviorOptions(options =>
+{
+    //to dont map manueally the parameters
+    options.SuppressConsumesConstraintForFormFileParameters = true;
+    //To manage the erros manueally
+    options.SuppressMapClientErrors = true;
+});
+
 //Decorator
 builder.Services.AddPersistenceLayer(builder.Configuration);
 builder.Services.AddApplicationLayer(builder.Configuration);

@@ -1,4 +1,6 @@
-﻿namespace StockApp.WebApi.Extensions
+﻿using Swashbuckle.AspNetCore.SwaggerUI;
+
+namespace StockApp.WebApi.Extensions
 {
     public static class AppExtensions
     {
@@ -8,6 +10,7 @@
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "StockApp API");
+                options.DefaultModelRendering(ModelRendering.Model);
             });
         }
     }

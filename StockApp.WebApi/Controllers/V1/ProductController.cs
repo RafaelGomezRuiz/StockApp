@@ -7,11 +7,14 @@ using StockApp.Core.Application.Features.Products.Commands.UpdateProduct;
 using StockApp.Core.Application.Features.Products.Queries.GetAllProducts;
 using StockApp.Core.Application.Features.Products.Queries.GetProductByID;
 using StockApp.Core.Application.ViewModels.Products;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Net.Mime;
 
 namespace StockApp.WebApi.Controllers.V1
 {
     [ApiVersion("1.0")]
     [Authorize(Roles = "ADMIN")]
+    [SwaggerTag("Products Maintance")]
     public class ProductController : BaseApiController
     {
         //protected readonly IProductService _productService;
@@ -24,6 +27,10 @@ namespace StockApp.WebApi.Controllers.V1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductViewModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "List of products",
+            Description = "get all products filtered by category"
+        )]
 
         public async Task<IActionResult> Get([FromQuery] GetAllProductsParameter filters)
         {
@@ -47,6 +54,10 @@ namespace StockApp.WebApi.Controllers.V1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductViewModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Product by id",
+            Description = "get a product filtering by its id"
+        )]
 
         public async Task<IActionResult> Get(int id)
         {
@@ -67,9 +78,14 @@ namespace StockApp.WebApi.Controllers.V1
         }
 
         [HttpPost]
+        [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "create products",
+            Description = "Receibe the necessary parameters to create a need product"
+        )]
 
         public async Task<IActionResult> Post([FromBody] CreateProductCommand command)
         {
@@ -91,11 +107,16 @@ namespace StockApp.WebApi.Controllers.V1
         }
 
         [HttpPut("{id}")]
+        [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SaveProductViewModel))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Update products",
+            Description = "Receibe the necessary parameters to update an available product"
+        )]
 
-        public async Task<IActionResult> Put(int id, UpdateProductCommand command)
+        public async Task<IActionResult> Put(int id,[FromBody] UpdateProductCommand command)
         {
             try
             {
@@ -123,6 +144,10 @@ namespace StockApp.WebApi.Controllers.V1
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "delete product",
+            Description = "Receibe the id to delete  an available product"
+        )]
         public async Task<IActionResult> Delete(int id)
         {
             try

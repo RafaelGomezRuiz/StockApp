@@ -9,11 +9,14 @@ using StockApp.Core.Application.Features.Categories.Queries.GetAllCategories;
 using StockApp.Core.Application.Interfaces.Services;
 using StockApp.Core.Application.ViewModels.Categories;
 using StockApp.Core.Application.ViewModels.Products;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Net.Mime;
 
 namespace StockApp.WebApi.Controllers.V1
 {
     [ApiVersion("1.0")]
     [Authorize(Roles ="BASIC")]
+    [SwaggerTag("category maintance")]
     public class CategoryController : BaseApiController
     {
         //protected readonly ICategoryService _categoryService;
@@ -26,7 +29,10 @@ namespace StockApp.WebApi.Controllers.V1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryViewModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
+        [SwaggerOperation(
+            Summary= "Get Categories list",
+            Description = "We get All categories with includes"
+        )]  
         public async Task<IActionResult> Get()
         {
             try
@@ -50,6 +56,10 @@ namespace StockApp.WebApi.Controllers.V1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryViewModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Get category by id",
+            Description = "We get A categories by id with includes"
+        )]
 
         public async Task<IActionResult> Get(int id)
         {
@@ -73,8 +83,13 @@ namespace StockApp.WebApi.Controllers.V1
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "post a category",
+            Description = "We receibe the necessary parameters for create a category"
+        )]
+        [Consumes(MediaTypeNames.Application.Json)]
 
-        public async Task<IActionResult> Post(CreateCategoryCommand command)
+        public async Task<IActionResult> Post([FromBody] CreateCategoryCommand command)
         {
             try
             {
@@ -97,8 +112,13 @@ namespace StockApp.WebApi.Controllers.V1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SaveCategoryViewModel))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "update a category",
+            Description = "We receibe the necessary parameters for update a category"
+        )]
+        [Consumes(MediaTypeNames.Application.Json)]
 
-        public async Task<IActionResult> Put(int id, UpdateCategoryCommand command)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateCategoryCommand command)
         {
             try
             {
@@ -121,6 +141,10 @@ namespace StockApp.WebApi.Controllers.V1
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Delete a category",
+            Description = "We receibe the necessary parameters to delete a category"
+        )]
         public async Task<IActionResult> Delete(DeleteCategoryByIdCommand command)
         {
             try

@@ -1,6 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Components;
+using Humanizer;
 
 namespace StockApp.WebApi.Extensions
 {
@@ -25,6 +26,9 @@ namespace StockApp.WebApi.Extensions
                         Url = new Uri("https://www.itla.edu.do")
                     }
                 });
+
+                //To enable swagger documentationn
+                options.EnableAnnotations();
 
                 options.DescribeAllParametersInCamelCase();
 
