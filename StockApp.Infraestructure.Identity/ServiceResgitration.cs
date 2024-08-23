@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using StockApp.Core.Application.Dtos.Token;
 using StockApp.Core.Application.Interfaces.Services;
+using StockApp.Core.Application.Wrappers;
 using StockApp.Core.Domain.Settings;
 using StockApp.Infraestructure.Identity.Entities;
 using StockApp.Infraestructure.Identity.Seeds;
@@ -83,14 +84,14 @@ namespace StockApp.Infraestructure.Identity
                         c.HandleResponse();
                         c.Response.StatusCode = 401;
                         c.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new JwtResponse { HasError=true, ErrorDescription="Arent authorized" });
+                        var result = JsonConvert.SerializeObject(new Response<string>("Arent authorized"));
                         return c.Response.WriteAsync(result);
                     },
                     OnForbidden = c =>
                     {
                         c.Response.StatusCode = 403;
                         c.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new JwtResponse { HasError = true, ErrorDescription = "Arent authorized to access these resources" });
+                        var result = JsonConvert.SerializeObject(new Response<string>("Arent authorized to access these resources"));
                         return c.Response.WriteAsync(result);
                     }
 

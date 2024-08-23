@@ -2,6 +2,7 @@
 using MediatR;
 using StockApp.Core.Application.Interfaces.Repositories;
 using StockApp.Core.Application.ViewModels.Products;
+using StockApp.Core.Application.Wrappers;
 using StockApp.Core.Domain.Entities;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -10,7 +11,7 @@ namespace StockApp.Core.Application.Features.Products.Commands.UpdateProduct
     /// <summary>
     /// Necessary parameters to update a product
     /// </summary>
-    public class UpdateProductCommand : IRequest<ProductUpdateResponse>
+    public class UpdateProductCommand : IRequest<Response<ProductUpdateResponse>>
     {
         [SwaggerParameter(Description = "Id of the product to update")]
         public int Id { get; set; }
@@ -31,7 +32,7 @@ namespace StockApp.Core.Application.Features.Products.Commands.UpdateProduct
         public int CategoryId { get; set; }
     }
 
-    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,ProductUpdateResponse> 
+    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Response<ProductUpdateResponse>> 
     {
         private readonly IProductRepository productRepository;
         private readonly IMapper mapper;
@@ -41,7 +42,7 @@ namespace StockApp.Core.Application.Features.Products.Commands.UpdateProduct
             this.productRepository = productRepository;
         }
 
-        public async Task<ProductUpdateResponse> Handle (UpdateProductCommand command, CancellationToken cancellationToken) 
+        public async Task<Response<ProductUpdateResponse>> Handle (UpdateProductCommand command, CancellationToken cancellationToken) 
         {
             var product = await productRepository.GetByIdAsync(command.Id);
             if (product == null) throw new Exception("Product Doesnt exits");
@@ -49,8 +50,8 @@ namespace StockApp.Core.Application.Features.Products.Commands.UpdateProduct
             product = mapper.Map<Product>(command);
             await productRepository.UpdateAsync(product, product.Id);
             var productResponse =  mapper.Map<ProductUpdateResponse>(product);
-            
-            return productResponse;
+
+            return new Response<ProductUpdateResponse>(productResponse);
         }
     }
 }

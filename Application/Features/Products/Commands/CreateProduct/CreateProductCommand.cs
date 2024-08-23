@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using StockApp.Core.Application.Interfaces.Repositories;
+using StockApp.Core.Application.Wrappers;
 using StockApp.Core.Domain.Entities;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -9,7 +10,7 @@ namespace StockApp.Core.Application.Features.Products.Commands.CreateProduct
     /// <summary>
     /// Necessary parameters for the creation of a product
     /// </summary>
-    public class CreateProductCommand : IRequest<int>
+    public class CreateProductCommand : IRequest<Response<int>>
     {
         /// <example>
         /// Tostadora
@@ -45,7 +46,7 @@ namespace StockApp.Core.Application.Features.Products.Commands.CreateProduct
         public string? UserId { get; set; }
     }
 
-    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>
+    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Response<int>>
     {
         private readonly IProductRepository productRepository;
         private readonly IMapper mapper;
@@ -56,11 +57,11 @@ namespace StockApp.Core.Application.Features.Products.Commands.CreateProduct
             this.mapper = mapper;
         }
 
-        public async Task<int> Handle(CreateProductCommand command, CancellationToken cancelationToken)
+        public async Task<Response<int>> Handle(CreateProductCommand command, CancellationToken cancelationToken)
         {
             var product = mapper.Map<Product>(command);
             product = await productRepository.AddAsync(product);
-            return product.Id;
+            return new Response<int>(product.Id);
         }
     }
 

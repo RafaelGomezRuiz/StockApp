@@ -3,6 +3,7 @@ using MediatR;
 using StockApp.Core.Application.Interfaces.Repositories;
 using StockApp.Core.Application.ViewModels.Categories;
 using StockApp.Core.Application.ViewModels.Products;
+using StockApp.Core.Application.Wrappers;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace StockApp.Core.Application.Features.Products.Queries.GetAllProducts
@@ -11,14 +12,14 @@ namespace StockApp.Core.Application.Features.Products.Queries.GetAllProducts
     /// <summary>
     /// parameters to filter a product
     /// </summary>
-    public class GetAllProductsQuery : IRequest<IList<ProductViewModel>>
+    public class GetAllProductsQuery : IRequest<Response<List<ProductViewModel>>>
     {
         [SwaggerParameter(Description = "Write the id of the category to filter by")]
         public int CategoryId { get; set; }
     }
 
     //request ahndler
-    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IList<ProductViewModel>>
+    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, Response<List<ProductViewModel>>>
     {
         private readonly IProductRepository productRepository;
         private readonly IMapper mapper;
@@ -29,10 +30,11 @@ namespace StockApp.Core.Application.Features.Products.Queries.GetAllProducts
             this.mapper = mapper;
         }
 
-        public async Task<IList<ProductViewModel>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+        public async Task<Response<List<ProductViewModel>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
             var productsList = await GetAllViewModelWithFilter(request);
-            return (productsList == null || productsList.Count == 0) ? throw new Exception("There anrent products") : productsList;
+            var reponse = new Response<List<ProductViewModel>>() { Data=productsList };
+            return (productsList == null || productsList.Count == 0) ? throw new Exception("There anrent products") : reponse;
         }
 
         private async Task<List<ProductViewModel>> GetAllViewModelWithFilter(GetAllProductsQuery filters)

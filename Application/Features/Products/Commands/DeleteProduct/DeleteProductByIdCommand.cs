@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using StockApp.Core.Application.Interfaces.Repositories;
+using StockApp.Core.Application.Wrappers;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace StockApp.Core.Application.Features.Products.Commands.DeleteProduct
@@ -7,13 +8,13 @@ namespace StockApp.Core.Application.Features.Products.Commands.DeleteProduct
     /// <summary>
     /// Necessary parameters to delete a product
     /// </summary>
-    public class DeleteProductByIdCommand : IRequest<int>
+    public class DeleteProductByIdCommand : IRequest<Response<int>>
     {
-        [SwaggerParameter(Description ="Id of the product to delete")]
+        [SwaggerParameter(Description = "Id of the product to delete")]
         public int Id { get; set; }
     }
 
-    public class DeleteProductByIdCommandHandler : IRequestHandler<DeleteProductByIdCommand, int>
+    public class DeleteProductByIdCommandHandler : IRequestHandler<DeleteProductByIdCommand, Response<int>>
     {
         private readonly IProductRepository productRepository;
 
@@ -21,7 +22,7 @@ namespace StockApp.Core.Application.Features.Products.Commands.DeleteProduct
         {
             this.productRepository = productRepository;
         }
-        public async Task<int> Handle(DeleteProductByIdCommand command, CancellationToken cancellationToken)
+        public async Task<Response<int>> Handle(DeleteProductByIdCommand command, CancellationToken cancellationToken)
         {
             var producto = await productRepository.GetByIdAsync(command.Id);
 
@@ -29,8 +30,7 @@ namespace StockApp.Core.Application.Features.Products.Commands.DeleteProduct
 
 
             await productRepository.DeleteAsync(producto);
-
-            return producto.Id;
+            return new Response<int>(producto.Id);
         }
     }
 
