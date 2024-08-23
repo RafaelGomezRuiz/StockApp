@@ -2,11 +2,16 @@
 using MediatR;
 using StockApp.Core.Application.Interfaces.Repositories;
 using StockApp.Core.Domain.Entities;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace StockApp.Core.Application.Features.Categories.Commands.DeleteCategory
 {
+    /// <summary>
+    /// Parameters to delete a category
+    /// </summary>
     public class DeleteCategoryByIdCommand : IRequest<int>
     {
+        [SwaggerParameter(Description ="The id of the category to delete")]
         public int Id { get; set; }
     }
 

@@ -2,12 +2,19 @@
 using MediatR;
 using StockApp.Core.Application.Interfaces.Repositories;
 using StockApp.Core.Domain.Entities;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace StockApp.Core.Application.Features.Categories.Commands.CreateCategory
 {
+    /// <summary>
+    /// Parameters to create a category
+    /// </summary>
     public class CreateCategoryCommand : IRequest<int>
     {
+        [SwaggerParameter(Description = "the category name")]
         public string Name { get; set; }
+        
+        [SwaggerParameter(Description = "the category description")]
         public string Description { get; set; }
     }
 

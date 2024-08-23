@@ -3,12 +3,17 @@ using MediatR;
 using StockApp.Core.Application.Interfaces.Repositories;
 using StockApp.Core.Application.ViewModels.Categories;
 using StockApp.Core.Application.ViewModels.Products;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace StockApp.Core.Application.Features.Products.Queries.GetAllProducts
 {
     //request
+    /// <summary>
+    /// parameters to filter a product
+    /// </summary>
     public class GetAllProductsQuery : IRequest<IList<ProductViewModel>>
     {
+        [SwaggerParameter(Description = "Write the id of the category to filter by")]
         public int CategoryId { get; set; }
     }
 

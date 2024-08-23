@@ -2,11 +2,16 @@
 using MediatR;
 using StockApp.Core.Application.Interfaces.Repositories;
 using StockApp.Core.Application.ViewModels.Categories;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace StockApp.Core.Application.Features.Categories.Queries.GetAllByIdCategories
 {
+    /// <summary>
+    /// Parameters to get a category by id
+    /// </summary>
     public class GetCategoryByIdQuery : IRequest<CategoryViewModel>
     {
+        [SwaggerParameter(Description = "category id to get")]
         public int Id { get; set; }
     }
 

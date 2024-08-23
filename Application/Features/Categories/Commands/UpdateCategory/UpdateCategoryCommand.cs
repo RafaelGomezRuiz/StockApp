@@ -2,13 +2,21 @@
 using MediatR;
 using StockApp.Core.Application.Interfaces.Repositories;
 using StockApp.Core.Domain.Entities;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace StockApp.Core.Application.Features.Categories.Commands.UpdateCategory
 {
+    /// <summary>
+    /// Parameters to update a category
+    /// </summary>
     public class UpdateCategoryCommand : IRequest<UpdateCategoryResponse>
     {
+     
+        [SwaggerParameter(Description ="category id to update")]
         public int Id { get; set; }
+        [SwaggerParameter(Description = "category name to update")]
         public string Name { get; set; }
+        [SwaggerParameter(Description ="category description to update")]
         public string Description { get; set; }
     }
 

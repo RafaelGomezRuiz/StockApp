@@ -1,10 +1,15 @@
 ﻿using MediatR;
 using StockApp.Core.Application.Interfaces.Repositories;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace StockApp.Core.Application.Features.Products.Commands.DeleteProduct
 {
+    /// <summary>
+    /// Necessary parameters to delete a product
+    /// </summary>
     public class DeleteProductByIdCommand : IRequest<int>
     {
+        [SwaggerParameter(Description ="Id of the product to delete")]
         public int Id { get; set; }
     }
 

@@ -3,11 +3,16 @@ using MediatR;
 using StockApp.Core.Application.Interfaces.Repositories;
 using StockApp.Core.Application.ViewModels.Categories;
 using StockApp.Core.Application.ViewModels.Products;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace StockApp.Core.Application.Features.Products.Queries.GetProductByID
 {
+    /// <summary>
+    /// parameters to Get a product by id  
+    /// </summary>
     public class GetProductByIdQuery : IRequest<ProductViewModel>
     {
+        [SwaggerParameter(Description = "Id of the product to get")]
         public int Id { get; set; }
     }
 
