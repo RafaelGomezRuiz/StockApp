@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using StockApp.Core.Application.Dtos.Token;
 using StockApp.Core.Application.Interfaces.Services;
 using StockApp.Core.Application.Wrappers;
 using StockApp.Core.Domain.Settings;
@@ -21,21 +20,9 @@ namespace StockApp.Infraestructure.Identity
 {
     public static class ServiceResgitration
     {
-        public static void AddIdentityInfraestructure(this IServiceCollection services, IConfiguration configuration)
+        public static void AddIdentityInfraestructureForApi(this IServiceCollection services, IConfiguration configuration)
         {
-            #region Context
-
-            if (configuration.GetValue<bool>("UseIUnMemoryDatabase"))
-            {
-                services.AddDbContext<IdentityContext>(options => options.UseInMemoryDatabase("IdentityContextInMemory"));
-            }
-            else
-            {
-                var connectionString = configuration.GetConnectionString("IdentityConnection");
-                services.AddDbContext<IdentityContext>(options =>
-                                            options.UseSqlServer(connectionString, a => a.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)));
-            }
-            #endregion
+            ContextConfiguration(services, configuration);
 
             #region Identity
 
@@ -94,15 +81,62 @@ namespace StockApp.Infraestructure.Identity
                         var result = JsonConvert.SerializeObject(new Response<string>("Arent authorized to access these resources"));
                         return c.Response.WriteAsync(result);
                     }
-
                 };
             });
             #endregion
 
             #region Services
-            services.AddTransient<IAccountService, AccountService>();
+            ServiceConfiguration(services);
             #endregion
         }
+
+        //ForWeb
+        public static void AddIdentityInfraestructureForWeb(this IServiceCollection services, IConfiguration configuration)
+        {
+            ContextConfiguration(services, configuration);
+
+            #region Identity
+                services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddEntityFrameworkStores<IdentityContext>()
+                    .AddDefaultTokenProviders();
+
+                services.ConfigureApplicationCookie(options =>
+                {
+                    options.LoginPath = "/User";
+                    options.AccessDeniedPath = "/User/AccessDenied";
+                });
+
+                services.AddAuthentication();
+            #endregion
+
+            #region Services
+            ServiceConfiguration(services);
+            #endregion
+        }
+
+        private static void ContextConfiguration(IServiceCollection services, IConfiguration configuration)
+        {
+            #region Context
+
+            if (configuration.GetValue<bool>("UseIUnMemoryDatabase"))
+            {
+                services.AddDbContext<IdentityContext>(options => options.UseInMemoryDatabase("IdentityContextInMemory"));
+            }
+            else
+            {
+                var connectionString = configuration.GetConnectionString("IdentityConnection");
+                services.AddDbContext<IdentityContext>(options =>
+                                            options.UseSqlServer(connectionString, a => a.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)));
+            }
+            #endregion
+        }
+        private static void ServiceConfiguration(IServiceCollection services)
+        {
+            #region Services
+                services.AddTransient<IAccountService, AccountService>();
+            #endregion
+        }
+
         public static async Task AddIdentitySeeds(this IHost app)
         {
             using (var scope = app.Services.CreateScope())

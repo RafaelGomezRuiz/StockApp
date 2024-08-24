@@ -13,7 +13,7 @@ builder.Services.AddSession();
 builder.Services.AddPersistenceLayer(builder.Configuration);
 builder.Services.AddApplicationLayer(builder.Configuration); 
 builder.Services.AddSharedInfraestructure(builder.Configuration);
-builder.Services.AddIdentityInfraestructure(builder.Configuration);
+builder.Services.AddIdentityInfraestructureForWeb(builder.Configuration);
 
 builder.Services.AddControllersWithViews();
 

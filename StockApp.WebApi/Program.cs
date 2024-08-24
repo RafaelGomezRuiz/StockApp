@@ -22,7 +22,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddPersistenceLayer(builder.Configuration);
 builder.Services.AddApplicationLayer(builder.Configuration);
 builder.Services.AddSharedInfraestructure(builder.Configuration);
-builder.Services.AddIdentityInfraestructure(builder.Configuration);
+builder.Services.AddIdentityInfraestructureForApi(builder.Configuration);
 builder.Services.AddHealthChecks();
 
 builder.Services.AddSwaggerExtension();
