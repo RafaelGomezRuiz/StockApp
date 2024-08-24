@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
+using StockApp.Core.Application.Exceptions;
 using StockApp.Core.Application.Interfaces.Repositories;
 using StockApp.Core.Application.ViewModels.Categories;
 using StockApp.Core.Application.ViewModels.Products;
 using StockApp.Core.Application.Wrappers;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Net;
 
 namespace StockApp.Core.Application.Features.Products.Queries.GetProductByID
 {
@@ -34,7 +36,7 @@ namespace StockApp.Core.Application.Features.Products.Queries.GetProductByID
             var productVm= mapper.Map<ProductViewModel>(product);
             var response = new Response<ProductViewModel>() { Data = productVm };
 
-            return (productVm == null) ? throw new Exception("Product Doesnt exits") : response;
+            return (productVm == null) ? throw new ApiException("Product not found", (int)HttpStatusCode.NotFound) : response;
         }
 
         private async Task<ProductViewModel> GetProductViewModel(int id)

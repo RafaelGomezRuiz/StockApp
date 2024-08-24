@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
+using StockApp.Core.Application.Exceptions;
 using StockApp.Core.Application.Interfaces.Repositories;
 using StockApp.Core.Application.ViewModels.Categories;
 using StockApp.Core.Application.ViewModels.Products;
 using StockApp.Core.Application.Wrappers;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Net;
 
 namespace StockApp.Core.Application.Features.Products.Queries.GetAllProducts
 {
@@ -34,7 +36,7 @@ namespace StockApp.Core.Application.Features.Products.Queries.GetAllProducts
         {
             var productsList = await GetAllViewModelWithFilter(request);
             var reponse = new Response<List<ProductViewModel>>() { Data=productsList };
-            return (productsList == null || productsList.Count == 0) ? throw new Exception("There anrent products") : reponse;
+            return (productsList == null || productsList.Count == 0) ? throw new ApiException("Products not found", (int)HttpStatusCode.NotFound) : reponse;
         }
 
         private async Task<List<ProductViewModel>> GetAllViewModelWithFilter(GetAllProductsQuery filters)

@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using StockApp.Core.Application.Exceptions;
 using StockApp.Core.Application.Interfaces.Repositories;
 using StockApp.Core.Application.Wrappers;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Net;
 
 namespace StockApp.Core.Application.Features.Products.Commands.DeleteProduct
 {
@@ -26,7 +28,7 @@ namespace StockApp.Core.Application.Features.Products.Commands.DeleteProduct
         {
             var producto = await productRepository.GetByIdAsync(command.Id);
 
-            if (producto == null) throw new Exception("Product Doesnt exits");
+            if (producto == null) throw new ApiException("Product not found", (int)HttpStatusCode.NotFound);
 
 
             await productRepository.DeleteAsync(producto);

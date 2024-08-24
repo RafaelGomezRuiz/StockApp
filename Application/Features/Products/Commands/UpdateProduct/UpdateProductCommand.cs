@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
+using StockApp.Core.Application.Exceptions;
 using StockApp.Core.Application.Interfaces.Repositories;
 using StockApp.Core.Application.ViewModels.Products;
 using StockApp.Core.Application.Wrappers;
 using StockApp.Core.Domain.Entities;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Net;
 
 namespace StockApp.Core.Application.Features.Products.Commands.UpdateProduct
 {
@@ -45,7 +47,7 @@ namespace StockApp.Core.Application.Features.Products.Commands.UpdateProduct
         public async Task<Response<ProductUpdateResponse>> Handle (UpdateProductCommand command, CancellationToken cancellationToken) 
         {
             var product = await productRepository.GetByIdAsync(command.Id);
-            if (product == null) throw new Exception("Product Doesnt exits");
+            if (product == null) throw new ApiException("Product not found", (int)HttpStatusCode.NotFound);
 
             product = mapper.Map<Product>(command);
             await productRepository.UpdateAsync(product, product.Id);
