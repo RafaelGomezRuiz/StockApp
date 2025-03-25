@@ -16,7 +16,7 @@ namespace StockApp.Infraestructure.Persistence
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
             #region Services
-            //services.AddTransient(typeof(IGenericService<SaveViewModel,ViewModel>),typeof(GenericService<SaveViewModel, ViewModel>));
+            //services.AddTransient(typeof(IGenericService<SaveViewModel, ViewModel>), typeof(GenericService<SaveViewModel, ViewModel>));
             services.AddTransient<IProductService, ProductService>();
                 services.AddTransient<ICategoryService, CategoryService>();
                 services.AddTransient<IUserService, UserService>();

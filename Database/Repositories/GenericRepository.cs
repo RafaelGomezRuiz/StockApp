@@ -1,18 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StockApp.Core.Application.Interfaces.Repositories;
-using StockApp.Core.Domain.Entities;
 using StockApp.Infraestructure.Persistence.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Repository
 {
     public class GenericRepository<Entity> : IGenericRepository<Entity> where Entity : class
     {
-        private readonly ApplicationContext _dbContext;
+        protected readonly ApplicationContext _dbContext;
 
         public GenericRepository(ApplicationContext dbContext)
         {
@@ -24,7 +17,6 @@ namespace Application.Repository
             await _dbContext.Set<Entity>().AddAsync(entity);
             await _dbContext.SaveChangesAsync();
             return entity;
-
         }
 
         public virtual async Task UpdateAsync(Entity entity, int id)
@@ -51,9 +43,9 @@ namespace Application.Repository
         {
             var query = _dbContext
                  .Set<Entity>().AsQueryable();
-            foreach(string property in properties)
+            foreach (string property in properties)
             {
-                query=query.Include(property);
+                query = query.Include(property);
             }
             return await query
                  .ToListAsync();

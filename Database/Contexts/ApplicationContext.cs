@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using StockApp.Core.Application.Dtos.Account;
-using StockApp.Core.Application.Helpers;
+﻿using Microsoft.EntityFrameworkCore;
 
 using StockApp.Core.Domain.Common;
 using StockApp.Core.Domain.Entities;

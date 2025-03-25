@@ -105,6 +105,10 @@ namespace StockApp.Infraestructure.Identity
                     options.LoginPath = "/User";
                     options.AccessDeniedPath = "/User/AccessDenied";
                 });
+                
+                //sin esta linea daba error porque como ambos sevices utilizan accoutn service, se genera el codigo de JWT 
+                // la solucinon ideal es crear un factory para que devuelva el account service requerido
+                services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
 
                 services.AddAuthentication();
             #endregion

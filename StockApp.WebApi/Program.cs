@@ -1,4 +1,4 @@
-using StockApp.Infraestructure.Persistence;
+ using StockApp.Infraestructure.Persistence;
 using StockApp.Infraestructure.Shared;
 using StockApp.Infraestructure.Identity;
 using StockApp.WebApi.Extensions;
@@ -43,6 +43,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerExtension();
+    
 }
 
 
@@ -50,6 +51,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+//the one from errorMiddleware
+app.UseErrorHandlingMiddleware();
 app.UseHealthChecks("/health");
 app.UseSession();
 

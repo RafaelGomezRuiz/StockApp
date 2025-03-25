@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
 using StockApp.Core.Application.Dtos.Account;
-using StockApp.Core.Application.Dtos.Email;
-using StockApp.Core.Application.Interfaces.Repositories;
 using StockApp.Core.Application.Interfaces.Services;
-using StockApp.Core.Application.ViewModels.Categories;
 using StockApp.Core.Application.ViewModels.Users;
-using StockApp.Core.Domain.Entities;
 
 namespace Application.Services
 {

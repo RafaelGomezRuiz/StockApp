@@ -10,7 +10,6 @@ using StockApp.Core.Application.Interfaces.Services;
 using StockApp.Core.Domain.Settings;
 using StockApp.Infraestructure.Identity.Entities;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -72,13 +71,13 @@ namespace StockApp.Infraestructure.Identity.Services
 
             authenticationResponse.Roles = rolesList.ToList();
             authenticationResponse.IsVerified = user.EmailConfirmed;
-            
+
             JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user);
             authenticationResponse.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            
+
             var refreshTokenObject = GenerateRefreshToken();
             authenticationResponse.RefreshToken = refreshTokenObject.Token;
-            
+
             return authenticationResponse;
         }
         public async Task SignOutAsync()
@@ -212,13 +211,13 @@ namespace StockApp.Infraestructure.Identity.Services
         }
 
         #region privates
-        private async Task<JwtSecurityToken> GenerateJWToken( ApplicationUser user)
+        private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user)
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
             var userRoles = await _userManager.GetRolesAsync(user);
 
             var roleClaims = new List<Claim>();
-            foreach(var role in userRoles)
+            foreach (var role in userRoles)
             {
                 roleClaims.Add(new Claim("roles", role));
             }
@@ -238,21 +237,21 @@ namespace StockApp.Infraestructure.Identity.Services
             var signinCredentials = new SigningCredentials(symmectricSecurityKey, SecurityAlgorithms.HmacSha256);
 
             var jwtSecurityToken = new JwtSecurityToken(
-                issuer : JWTSettings.Issuer,
-                audience : JWTSettings.Audience,
-                claims : claims,
-                expires : DateTime.UtcNow.AddMinutes(JWTSettings.DurationInMinutes),
-                signingCredentials : signinCredentials
+                issuer: JWTSettings.Issuer,
+                audience: JWTSettings.Audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(JWTSettings.DurationInMinutes),
+                signingCredentials: signinCredentials
                 );
 
             return jwtSecurityToken;
-        } 
+        }
 
         private RefreshToken GenerateRefreshToken()
         {
             return new RefreshToken()
             {
-                Token= RandomTokenString(),
+                Token = RandomTokenString(),
                 Expires = DateTime.UtcNow.AddDays(7),
                 Created = DateTime.UtcNow,
             };

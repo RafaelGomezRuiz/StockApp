@@ -30,7 +30,7 @@ namespace StockApp.WebApi.Extensions
                 //To enable swagger documentationn
                 options.EnableAnnotations();
 
-                options.DescribeAllParametersInCamelCase();
+                options.DescribeAllParametersInCamelCase();  
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {

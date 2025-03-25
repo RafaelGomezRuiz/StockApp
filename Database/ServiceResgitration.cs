@@ -25,7 +25,7 @@ namespace StockApp.Infraestructure.Persistence
                                             options.UseSqlServer(connectionString , a => a.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName)));
             }
             #endregion
-
+             
             #region Repositories
             //services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 

@@ -32,17 +32,17 @@
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="File" class="form-label">Seleccione un archivo: </label>
-                            @if (editMode == false)
-                            {
-                                <input asp-for="File" class="form-control">
-                            }
-                            else
-                            {
-                                <input required asp-for="File" class="form-control">
-                            }
-                        </div>
+                            <div class="mb-3">
+                                <label asp-for="File" class="form-label">Seleccione un archivo: </label>
+                                @if (editMode == false)
+                                {
+                                    <input asp-for="File" class="form-control">
+                                }
+                                else
+                                {
+                                    <input required asp-for="File" class="form-control">
+                                }
+                            </div>
                         
                         <div class="mb-3">
                             <label asp-for="Price" class="form-label">Precio: </label>

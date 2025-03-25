@@ -34,20 +34,7 @@ namespace StockApp.WebApi.Controllers.V1
 
         public async Task<IActionResult> Get([FromQuery] GetAllProductsParameter filters)
         {
-            try
-            {
                 return Ok(await Mediator.Send(new GetAllProductsQuery() { CategoryId = filters.CategoryId }));
-                //IEnumerable<ProductViewModel> products = await _productService.GetAllViewModelWithFilter(filters);
-                //if (products == null || products.Count() == 0)
-                //{
-                //    return NotFound();
-                //}
-                //return Ok(products);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
         }
 
         [HttpGet("{id}")]
@@ -61,8 +48,6 @@ namespace StockApp.WebApi.Controllers.V1
 
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
                 return Ok(await Mediator.Send(new GetProductByIdQuery() { Id = id }));
                 //SaveProductViewModel product = await _productService.GetByIdSaveViewModel(id);
                 //if (product == null )
@@ -70,11 +55,6 @@ namespace StockApp.WebApi.Controllers.V1
                 //    return NotFound();
                 //}
                 //return Ok(product);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
         }
 
         [HttpPost]
@@ -89,8 +69,6 @@ namespace StockApp.WebApi.Controllers.V1
 
         public async Task<IActionResult> Post([FromBody] CreateProductCommand command)
         {
-            try
-            {
                 if (!ModelState.IsValid)
                 {
                     return BadRequest();
@@ -99,11 +77,6 @@ namespace StockApp.WebApi.Controllers.V1
                 return Ok(Mediator.Send(command));
                 //await _productService.Add(vm);
                 //return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
         }
 
         [HttpPut("{id}")]
@@ -118,8 +91,6 @@ namespace StockApp.WebApi.Controllers.V1
 
         public async Task<IActionResult> Put(int id,[FromBody] UpdateProductCommand command)
         {
-            try
-            {
                 if (!ModelState.IsValid)
                 {
                     return BadRequest();
@@ -134,11 +105,6 @@ namespace StockApp.WebApi.Controllers.V1
 
                 //await _productService.Update(vm, id);
                 //return Ok(vm);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
         }
 
         [HttpDelete("{id}")]
@@ -150,18 +116,11 @@ namespace StockApp.WebApi.Controllers.V1
         )]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
                 await Mediator.Send(new DeleteProductByIdCommand() { Id = id });
                 return NoContent();
 
                 //await _productService.Delete(id);
                 //return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
         }
     }
 }

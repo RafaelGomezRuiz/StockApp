@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.SwaggerUI;
+﻿using StockApp.WebApi.Middlewares;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace StockApp.WebApi.Extensions
 {
@@ -12,6 +13,11 @@ namespace StockApp.WebApi.Extensions
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "StockApp API");
                 options.DefaultModelRendering(ModelRendering.Model);
             });
+        }
+
+        public static void UseErrorHandlingMiddleware(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<ErrorHandlerMiddleware>();
         }
     }
 }
